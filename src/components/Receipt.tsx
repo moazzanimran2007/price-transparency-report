@@ -145,13 +145,34 @@ export function Receipt({ product }: ReceiptProps) {
 
       {/* Learn why */}
       {showLearn && (
-        <div className="mt-8 mb-12 animate-fade-in border border-border rounded p-4 sm:p-6">
+        <div className="mt-8 animate-fade-in border border-border rounded p-4 sm:p-6">
           <div className="text-xs font-mono tracking-widest text-muted-foreground mb-3">
             WHY THIS MATTERS
           </div>
           <p className="text-sm leading-relaxed text-foreground/80">
             {product.learnWhy}
           </p>
+        </div>
+      )}
+
+      {/* What If Editor */}
+      {showLearn && (
+        <div className="mt-6 animate-fade-in">
+          <WhatIfEditor product={product} />
+        </div>
+      )}
+
+      {/* Charts */}
+      {showLearn && (
+        <div className="mt-6 animate-fade-in border border-border rounded p-4 sm:p-6">
+          <ProductCharts product={product} />
+        </div>
+      )}
+
+      {/* Share */}
+      {showLearn && (
+        <div className="mt-6 mb-12 animate-fade-in flex justify-center">
+          <ShareButton product={product} />
         </div>
       )}
     </div>
