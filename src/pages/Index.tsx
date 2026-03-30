@@ -134,6 +134,13 @@ const Index = () => {
         </main>
       )}
 
+      {/* Education section on home page */}
+      {!product && (
+        <div className="border-t border-border mt-12">
+          <EducationSection />
+        </div>
+      )}
+
       {/* Footer */}
       <footer className="border-t border-border py-8 px-4 text-center">
         <p className="text-[10px] font-mono text-muted-foreground max-w-md mx-auto leading-relaxed">
