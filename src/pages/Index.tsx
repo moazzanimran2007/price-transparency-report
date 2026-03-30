@@ -2,6 +2,7 @@ import { useState } from "react";
 import { lookupProduct, ProductData } from "@/lib/productData";
 import { SearchBar } from "@/components/SearchBar";
 import { Receipt } from "@/components/Receipt";
+import { EducationSection } from "@/components/EducationSection";
 import { ArrowLeftRight, X } from "lucide-react";
 
 const SUGGESTIONS = [
@@ -44,7 +45,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-12">
       {/* Hero */}
       <header className="pt-16 sm:pt-24 pb-10 px-4 text-center">
         <h1 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider text-foreground leading-none">
@@ -131,6 +132,13 @@ const Index = () => {
             </button>
           </div>
         </main>
+      )}
+
+      {/* Education section on home page */}
+      {!product && (
+        <div className="border-t border-border mt-12">
+          <EducationSection />
+        </div>
       )}
 
       {/* Footer */}
