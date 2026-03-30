@@ -243,6 +243,30 @@ const categoryProfiles: CategoryProfile[] = [
       "Many 'premium' skincare ingredients (hyaluronic acid, retinol, niacinamide) are commodity chemicals that cost pennies per dose. The 'proprietary blend' marketing obscures that a $12 drugstore product often contains identical active ingredients to a $90 department store one.",
     ],
   },
+  },
+  {
+    keywords: ["banana", "apple", "orange", "grape", "fruit", "vegetable", "tomato", "potato", "onion", "lettuce", "avocado", "strawberry", "blueberry", "mango", "grocery", "egg", "milk", "bread", "rice", "pasta", "cereal", "cheese", "yogurt", "butter", "chicken breast", "ground beef", "salmon", "produce"],
+    priceRange: [0.5, 12],
+    materialPct: [0.25, 0.40], laborPct: [0.08, 0.15], overheadPct: [0.05, 0.10],
+    shippingPct: [0.08, 0.15], dutiesPct: [0.005, 0.03], marketingPct: [0.02, 0.08],
+    shameRange: [15, 45],
+    insights: [
+      "Grocery items have some of the thinnest retail margins in consumer goods — typically 1-3% net profit for supermarkets. The farmer receives 15-25% of the retail price for produce. Most of the cost is in cold chain logistics, distribution, and retail overhead, not markup.",
+      "Fresh produce is one of the few product categories where the supply chain cost structure is relatively fair. The biggest markup happens at the retail level — supermarkets use produce as a 'loss leader' priced near cost to get you in the store, then profit on packaged goods.",
+      "Organic and 'premium' grocery labels can carry 30-100% markups over conventional equivalents, despite production cost differences of only 10-20%. The label premium far exceeds the actual farming cost premium in most cases.",
+    ],
+  },
+  {
+    keywords: ["candy", "chocolate", "snack", "chips", "cookie", "gum", "protein bar", "granola", "crackers", "oreo", "doritos", "pringles"],
+    priceRange: [1, 8],
+    materialPct: [0.10, 0.20], laborPct: [0.05, 0.10], overheadPct: [0.05, 0.10],
+    shippingPct: [0.05, 0.08], dutiesPct: [0.01, 0.03], marketingPct: [0.15, 0.25],
+    shameRange: [35, 60],
+    insights: [
+      "Packaged snacks have surprisingly high marketing-to-ingredient ratios. The corn in a bag of Doritos costs pennies; the brand, packaging, and shelf placement fees account for 40-60% of what you pay. 'Shrinkflation' — reducing package size while keeping the price — is the industry's favorite hidden markup.",
+      "The snack industry spends billions engineering 'bliss points' — the perfect combination of salt, sugar, and fat that maximizes craveability. This R&D is real but serves to create addictive consumption patterns rather than nutritional value.",
+    ],
+  },
 ];
 
 const defaultProfile: CategoryProfile = {
