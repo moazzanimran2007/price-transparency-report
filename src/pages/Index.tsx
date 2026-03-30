@@ -2,6 +2,7 @@ import { useState } from "react";
 import { lookupProduct, ProductData } from "@/lib/productData";
 import { SearchBar } from "@/components/SearchBar";
 import { Receipt } from "@/components/Receipt";
+import { EducationSection } from "@/components/EducationSection";
 import { ArrowLeftRight, X } from "lucide-react";
 
 const SUGGESTIONS = [
