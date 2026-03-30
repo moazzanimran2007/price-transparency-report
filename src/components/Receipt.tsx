@@ -3,6 +3,9 @@ import { ProductData } from "@/lib/productData";
 import { playTick, playDing } from "@/lib/audioUtils";
 import { CostBar } from "./CostBar";
 import { ShameOMeter } from "./ShameOMeter";
+import { WhatIfEditor } from "./WhatIfEditor";
+import { ProductCharts } from "./ProductCharts";
+import { ShareButton } from "./ShareButton";
 
 interface ReceiptProps {
   product: ProductData;
