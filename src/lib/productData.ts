@@ -294,7 +294,7 @@ function lerp(min: number, max: number, t: number): number {
   return min + (max - min) * t;
 }
 
-function generateGenericProduct(name: string): ProductData {
+function generateGenericProduct(name: string, userPrice?: number): ProductData {
   const lower = name.toLowerCase();
   const hash = lower.split("").reduce((acc, char, i) => acc + char.charCodeAt(0) * (i + 1), 0);
   const rand = seededRandom(hash);
@@ -304,7 +304,8 @@ function generateGenericProduct(name: string): ProductData {
     p.keywords.some(kw => lower.includes(kw))
   ) ?? defaultProfile;
 
-  const retailPrice = +lerp(profile.priceRange[0], profile.priceRange[1], rand()).toFixed(2);
+  // Use user-supplied price, or generate from category range
+  const retailPrice = userPrice ?? +lerp(profile.priceRange[0], profile.priceRange[1], rand()).toFixed(2);
 
   const materialPct = lerp(profile.materialPct[0], profile.materialPct[1], rand());
   const laborPct = lerp(profile.laborPct[0], profile.laborPct[1], rand());
@@ -328,7 +329,7 @@ function generateGenericProduct(name: string): ProductData {
 
   // Proper title case
   const displayName = name.split(" ").map(w => {
-    if (w.length <= 3 && w === w.toUpperCase()) return w; // preserve acronyms
+    if (w.length <= 3 && w === w.toUpperCase()) return w;
     return w.charAt(0).toUpperCase() + w.slice(1);
   }).join(" ");
 
@@ -351,12 +352,26 @@ function generateGenericProduct(name: string): ProductData {
   };
 }
 
-export function lookupProduct(query: string): ProductData {
+export function lookupProduct(query: string, userPrice?: number): ProductData {
   const key = query.toLowerCase().trim();
   for (const [k, v] of Object.entries(productDatabase)) {
-    if (key.includes(k) || k.includes(key)) return v;
+    if (key.includes(k) || k.includes(key)) {
+      // If user provided a price, scale the known product's breakdown proportionally
+      if (userPrice && userPrice > 0) {
+        const scale = userPrice / v.retailPrice;
+        return {
+          ...v,
+          retailPrice: userPrice,
+          breakdown: v.breakdown.map(b => ({
+            ...b,
+            amount: +(b.amount * scale).toFixed(2),
+          })),
+        };
+      }
+      return v;
+    }
   }
-  return generateGenericProduct(key);
+  return generateGenericProduct(key, userPrice);
 }
 
 export function getShameLabel(score: number): { label: string; color: string } {
