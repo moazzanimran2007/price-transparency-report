@@ -243,7 +243,6 @@ const categoryProfiles: CategoryProfile[] = [
       "Many 'premium' skincare ingredients (hyaluronic acid, retinol, niacinamide) are commodity chemicals that cost pennies per dose. The 'proprietary blend' marketing obscures that a $12 drugstore product often contains identical active ingredients to a $90 department store one.",
     ],
   },
-  },
   {
     keywords: ["banana", "apple", "orange", "grape", "fruit", "vegetable", "tomato", "potato", "onion", "lettuce", "avocado", "strawberry", "blueberry", "mango", "grocery", "egg", "milk", "bread", "rice", "pasta", "cereal", "cheese", "yogurt", "butter", "chicken breast", "ground beef", "salmon", "produce"],
     priceRange: [0.5, 12],
