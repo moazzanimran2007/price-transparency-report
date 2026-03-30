@@ -243,6 +243,29 @@ const categoryProfiles: CategoryProfile[] = [
       "Many 'premium' skincare ingredients (hyaluronic acid, retinol, niacinamide) are commodity chemicals that cost pennies per dose. The 'proprietary blend' marketing obscures that a $12 drugstore product often contains identical active ingredients to a $90 department store one.",
     ],
   },
+  {
+    keywords: ["banana", "apple", "orange", "grape", "fruit", "vegetable", "tomato", "potato", "onion", "lettuce", "avocado", "strawberry", "blueberry", "mango", "grocery", "egg", "milk", "bread", "rice", "pasta", "cereal", "cheese", "yogurt", "butter", "chicken breast", "ground beef", "salmon", "produce"],
+    priceRange: [0.5, 12],
+    materialPct: [0.25, 0.40], laborPct: [0.08, 0.15], overheadPct: [0.05, 0.10],
+    shippingPct: [0.08, 0.15], dutiesPct: [0.005, 0.03], marketingPct: [0.02, 0.08],
+    shameRange: [15, 45],
+    insights: [
+      "Grocery items have some of the thinnest retail margins in consumer goods — typically 1-3% net profit for supermarkets. The farmer receives 15-25% of the retail price for produce. Most of the cost is in cold chain logistics, distribution, and retail overhead, not markup.",
+      "Fresh produce is one of the few product categories where the supply chain cost structure is relatively fair. The biggest markup happens at the retail level — supermarkets use produce as a 'loss leader' priced near cost to get you in the store, then profit on packaged goods.",
+      "Organic and 'premium' grocery labels can carry 30-100% markups over conventional equivalents, despite production cost differences of only 10-20%. The label premium far exceeds the actual farming cost premium in most cases.",
+    ],
+  },
+  {
+    keywords: ["candy", "chocolate", "snack", "chips", "cookie", "gum", "protein bar", "granola", "crackers", "oreo", "doritos", "pringles"],
+    priceRange: [1, 8],
+    materialPct: [0.10, 0.20], laborPct: [0.05, 0.10], overheadPct: [0.05, 0.10],
+    shippingPct: [0.05, 0.08], dutiesPct: [0.01, 0.03], marketingPct: [0.15, 0.25],
+    shameRange: [35, 60],
+    insights: [
+      "Packaged snacks have surprisingly high marketing-to-ingredient ratios. The corn in a bag of Doritos costs pennies; the brand, packaging, and shelf placement fees account for 40-60% of what you pay. 'Shrinkflation' — reducing package size while keeping the price — is the industry's favorite hidden markup.",
+      "The snack industry spends billions engineering 'bliss points' — the perfect combination of salt, sugar, and fat that maximizes craveability. This R&D is real but serves to create addictive consumption patterns rather than nutritional value.",
+    ],
+  },
 ];
 
 const defaultProfile: CategoryProfile = {
@@ -270,7 +293,7 @@ function lerp(min: number, max: number, t: number): number {
   return min + (max - min) * t;
 }
 
-function generateGenericProduct(name: string): ProductData {
+function generateGenericProduct(name: string, userPrice?: number): ProductData {
   const lower = name.toLowerCase();
   const hash = lower.split("").reduce((acc, char, i) => acc + char.charCodeAt(0) * (i + 1), 0);
   const rand = seededRandom(hash);
@@ -280,7 +303,8 @@ function generateGenericProduct(name: string): ProductData {
     p.keywords.some(kw => lower.includes(kw))
   ) ?? defaultProfile;
 
-  const retailPrice = +lerp(profile.priceRange[0], profile.priceRange[1], rand()).toFixed(2);
+  // Use user-supplied price, or generate from category range
+  const retailPrice = userPrice ?? +lerp(profile.priceRange[0], profile.priceRange[1], rand()).toFixed(2);
 
   const materialPct = lerp(profile.materialPct[0], profile.materialPct[1], rand());
   const laborPct = lerp(profile.laborPct[0], profile.laborPct[1], rand());
@@ -304,7 +328,7 @@ function generateGenericProduct(name: string): ProductData {
 
   // Proper title case
   const displayName = name.split(" ").map(w => {
-    if (w.length <= 3 && w === w.toUpperCase()) return w; // preserve acronyms
+    if (w.length <= 3 && w === w.toUpperCase()) return w;
     return w.charAt(0).toUpperCase() + w.slice(1);
   }).join(" ");
 
@@ -327,12 +351,26 @@ function generateGenericProduct(name: string): ProductData {
   };
 }
 
-export function lookupProduct(query: string): ProductData {
+export function lookupProduct(query: string, userPrice?: number): ProductData {
   const key = query.toLowerCase().trim();
   for (const [k, v] of Object.entries(productDatabase)) {
-    if (key.includes(k) || k.includes(key)) return v;
+    if (key.includes(k) || k.includes(key)) {
+      // If user provided a price, scale the known product's breakdown proportionally
+      if (userPrice && userPrice > 0) {
+        const scale = userPrice / v.retailPrice;
+        return {
+          ...v,
+          retailPrice: userPrice,
+          breakdown: v.breakdown.map(b => ({
+            ...b,
+            amount: +(b.amount * scale).toFixed(2),
+          })),
+        };
+      }
+      return v;
+    }
   }
-  return generateGenericProduct(key);
+  return generateGenericProduct(key, userPrice);
 }
 
 export function getShameLabel(score: number): { label: string; color: string } {

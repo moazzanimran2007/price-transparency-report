@@ -21,8 +21,8 @@ const Index = () => {
   const [compareMode, setCompareMode] = useState(false);
   const [searchingFor, setSearchingFor] = useState<"primary" | "compare">("primary");
 
-  const handleSearch = (query: string) => {
-    const result = lookupProduct(query);
+  const handleSearch = (query: string, price?: number) => {
+    const result = lookupProduct(query, price);
     if (searchingFor === "compare") {
       setCompareProduct(result);
       setSearchingFor("primary");
